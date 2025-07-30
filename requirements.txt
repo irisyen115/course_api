@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+pydantic
+pyyaml
+datamodel-code-generator
+sqlalchemy
+asyncpg
+pydantic[email]
+psycopg2-binary
+pytest
+httpx
