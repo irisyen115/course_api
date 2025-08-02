@@ -1,0 +1,330 @@
+openapi: 3.1.0
+info:
+  title: Courses
+  version: 1.0.0
+paths:
+  /courses:
+    get:
+      summary: List Courses
+      operationId: list_courses_courses_get
+      parameters:
+      - name: start
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+          title: Start
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response List Courses Courses Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      summary: Create Course
+      operationId: create_course_courses_post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseInput'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseSchema'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /instructors:
+    get:
+      summary: List Instructors
+      operationId: list_instructors_instructors_get
+      parameters:
+      - name: start
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+          title: Start
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response List Instructors Instructors Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      summary: Create Instructor
+      operationId: create_instructor_instructors_post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructorInput'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstructorSchema'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /instructors/{instructorId}/courses:
+    get:
+      summary: List Instructor Courses
+      operationId: list_instructor_courses_instructors__instructorId__courses_get
+      parameters:
+      - name: instructorId
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Instructor ID
+      - name: start
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+          title: Start
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response List Instructor Courses Instructors  Instructorid  Courses
+                  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /courses/{courseId}:
+    put:
+      summary: Update Course
+      operationId: update_course_courses__courseId__put
+      parameters:
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Courseid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseInput'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseSchema'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      summary: Delete Course
+      operationId: delete_course_courses__courseId__delete
+      parameters:
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Courseid
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    CourseInput:
+      properties:
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+        instructorId:
+          type: integer
+          title: Instructorid
+        startTime:
+          type: string
+          format: time
+          title: Starttime
+        endTime:
+          type: string
+          format: time
+          title: Endtime
+      type: object
+      required:
+      - title
+      - description
+      - instructorId
+      - startTime
+      - endTime
+      title: CourseInput
+    CourseSchema:
+      properties:
+        id:
+          type: integer
+          title: Id
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+        instructorId:
+          type: integer
+          title: Instructorid
+        startTime:
+          type: string
+          format: time
+          title: Starttime
+        endTime:
+          type: string
+          format: time
+          title: Endtime
+        is_deleted:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Deleted
+          default: false
+        deleted_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Deleted At
+      type: object
+      required:
+      - id
+      - title
+      - description
+      - instructorId
+      - startTime
+      - endTime
+      title: CourseSchema
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    InstructorInput:
+      properties:
+        name:
+          type: string
+          title: Name
+        email:
+          type: string
+          format: email
+          title: Email
+        password:
+          type: string
+          title: Password
+          description: Raw password. It will be hashed using bcrypt before storing.
+      type: object
+      required:
+      - name
+      - email
+      - password
+      title: InstructorInput
+    InstructorSchema:
+      properties:
+        id:
+          type: integer
+          title: Id
+        name:
+          type: string
+          title: Name
+        email:
+          type: string
+          format: email
+          title: Email
+      type: object
+      required:
+      - id
+      - name
+      - email
+      title: InstructorSchema
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+servers:
+- url: https://irisyen115.synology.me/course_api
