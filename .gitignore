@@ -1,0 +1,6 @@
+__pytest__
+.pytest_cache
+file::memory:
+__pycache__
+.pytest_cache/
+test.db
