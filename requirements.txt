@@ -9,3 +9,5 @@ pydantic[email]
 psycopg2-binary
 pytest
 httpx
+PyYAML
+flask_bcrypt
